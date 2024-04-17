@@ -1,5 +1,8 @@
+from flask import Flask, jsonify
 from mysql.connector import connect, Error
 import os
+
+app = Flask(__name__)
 
 def create_connection():
     try:
@@ -9,12 +12,17 @@ def create_connection():
             password=os.getenv("DB_PASS"),
             database=os.getenv("DB_NAME"),
         )
-        print("Conexión exitosa a la base de datos")
         return connection
     except Error as e:
         print(f"Error: '{e}'")
 
-# Ejemplo de uso
-if __name__ == "__main__":
+@app.route('/padres', methods=['GET'])
+def get_padres():
     connection = create_connection()
-    # Aquí puedes continuar con tu código para interactuar con la base de datos
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM padres")
+    result = cursor.fetchall()
+    return jsonify(result)
+
+if __name__ == "__main__":
+    app.run()
