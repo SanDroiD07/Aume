@@ -7,11 +7,15 @@ app = Flask(__name__)
 def create_connection():
     try:
         connection = connect(
-            host=os.getenv("DB_HOST"),
-            user=os.getenv("DB_USER"),
+            user="Sandro",
             password=os.getenv("DB_PASS"),
+            host="college.mysql.database.azure.com",
+            port=3306,
             database=os.getenv("DB_NAME"),
+            ssl_ca="{ca-cert filename}",
+            ssl_disabled=False
         )
+        print("Conexión exitosa a la base de datos")
         return connection
     except Error as e:
         print(f"Error: '{e}'")
